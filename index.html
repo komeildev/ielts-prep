@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#7FBF68">
+<title>IELTS Prep — نسخه موقت</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="IELTS Prep">
+<style>
+:root{--bg:#f7f7f7;--surface:#fff;--text:#334155;--muted:#64748b;--line:#e5e7eb;--green:#7FBF68;--green2:#4e8a3e;--blue:#9CC4E6;--shadow:0 5px 0 rgba(0,0,0,.09)}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 0 0,rgba(127,191,104,.16),transparent 34%),radial-gradient(circle at 100% 100%,rgba(156,196,230,.18),transparent 34%),var(--bg);color:var(--text);font-family:Tahoma,"Segoe UI",Arial,sans-serif}
+.wrap{width:min(920px,calc(100% - 24px));margin:24px auto 50px}.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}.logo{width:62px;height:62px;border-radius:20px;background:linear-gradient(135deg,var(--green),var(--blue));display:grid;place-items:center;color:white;font-weight:900;box-shadow:var(--shadow)}h1{margin:0;font-size:30px}.sub{color:var(--muted);margin-top:6px;line-height:1.8}
+.panel{background:var(--surface);border:2px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{border:2px solid var(--line);border-radius:20px;padding:20px;background:linear-gradient(135deg,#fff,#fbfdff)}.tag{display:inline-block;border-radius:999px;padding:7px 10px;background:#eef8e9;color:var(--green2);font-size:12px;font-weight:800}.card h2{margin:14px 0 8px}.card p{color:var(--muted);line-height:1.9;min-height:70px}.btn{display:inline-flex;text-decoration:none;border:2px solid var(--green);background:var(--green);color:white;border-radius:14px;padding:11px 15px;font-weight:900;box-shadow:0 4px 0 #4d863f;cursor:pointer}.btn.secondary{background:white;color:var(--text);border-color:var(--line);box-shadow:none}.tools{margin-top:16px;padding-top:16px;border-top:2px dashed var(--line);display:flex;gap:9px;flex-wrap:wrap}.status{margin-top:14px;padding:12px 14px;border-radius:14px;background:#f8fafc;color:var(--muted);line-height:1.8;font-size:13px}.good{color:var(--green2);font-weight:800}.note{margin-top:18px;color:var(--muted);font-size:13px;line-height:2}.install{margin-top:14px;border:2px solid #dbeafe;background:#f0f7ff;border-radius:18px;padding:16px;line-height:2}.install b{color:#315f81}
+input[type=file]{display:none}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.wrap{margin-top:14px}.card p{min-height:0}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="logo">IELTS</div><div><h1>IELTS Prep</h1><div class="sub">نسخه موقت برای Vocabulary و Collocation — مناسب GitHub Pages و iPad</div></div></div>
+  <main class="panel">
+    <div class="grid">
+      <section class="card"><span class="tag">Vocabulary</span><h2>واژگان IELTS</h2><p>فلش‌کارت، مثال انگلیسی و ترجمه فارسی، مرور فاصله‌دار و بانک واژگان.</p><a class="btn" href="./vocabulary.html">باز کردن واژگان</a></section>
+      <section class="card"><span class="tag">Collocation</span><h2>Collocation Lab</h2><p>کالوکیشن‌های کتاب + موارد مناسب DET برای Writing و Speaking، همراه با تمرین و مرور.</p><a class="btn" href="./collocation.html">باز کردن کالوکیشن</a></section>
+    </div>
+    <div class="install"><b>برای iPad:</b> این صفحه را در Safari باز کن → Share → Add to Home Screen. بعد مثل یک Web App جدا باز می‌شود و فایل‌ها بعد از اولین بار حتی آفلاین هم قابل باز شدن هستند.</div>
+    <div class="tools">
+      <button class="btn secondary" id="backupBtn">خروجی پشتیبان هر دو بخش</button>
+      <button class="btn secondary" id="restoreBtn">بازیابی پشتیبان</button>
+      <input id="restoreFile" type="file" accept="application/json">
+    </div>
+    <div class="status" id="status"></div>
+    <div class="note">پیشرفت هر دو بخش روی همان مرورگر و همان آدرس GitHub Pages ذخیره می‌شود. آپدیت کردن فایل‌های سایت در همان Repository پیشرفت را پاک نمی‌کند. برای انتقال بعدی به دامنه اصلی، قبل از جابه‌جایی یک فایل پشتیبان بگیر.</div>
+  </main>
+</div>
+<script>
+const VOCAB='ielts-prep-vocabulary-v1';
+const COLLOC='ielts-collocation-lab-v1';
+const statusEl=document.getElementById('status');
+function updateStatus(){
+  const v=localStorage.getItem(VOCAB), c=localStorage.getItem(COLLOC);
+  statusEl.innerHTML='<span class="good">ذخیره خودکار فعال است.</span><br>'+
+    'Vocabulary: '+(v?'پیشرفت ذخیره‌شده پیدا شد ✓':'هنوز شروع نشده')+'<br>'+
+    'Collocation: '+(c?'پیشرفت ذخیره‌شده پیدا شد ✓':'هنوز شروع نشده');
+}
+updateStatus();
+document.getElementById('backupBtn').onclick=()=>{
+  const payload={format:'ielts-prep-backup-v1',exportedAt:new Date().toISOString(),vocabulary:localStorage.getItem(VOCAB),collocation:localStorage.getItem(COLLOC)};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ielts-prep-all-progress.json';a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),500);
+};
+document.getElementById('restoreBtn').onclick=()=>document.getElementById('restoreFile').click();
+document.getElementById('restoreFile').onchange=e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const x=JSON.parse(r.result);if(x.format!=='ielts-prep-backup-v1')throw 0;if(x.vocabulary)localStorage.setItem(VOCAB,x.vocabulary);if(x.collocation)localStorage.setItem(COLLOC,x.collocation);updateStatus();alert('پیشرفت هر دو بخش بازیابی شد.')}catch(e){alert('فایل پشتیبان معتبر نیست.')}};r.readAsText(f);
+};
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(()=>{});}
+</script>
+</body>
+</html>
