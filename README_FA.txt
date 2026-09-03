@@ -29,3 +29,6 @@ IELTS Prep — GitHub Pages / iPad
 
 آفلاین:
 Service Worker فایل‌های اصلی را cache می‌کند؛ بعد از اولین بازدید آنلاین، برنامه در حالت عادی آفلاین هم باز می‌شود.
+
+
+نسخه v5: بازیابی فایل ielts-prep-all-progress.json در صفحه اصلی، Vocabulary و Collocation اصلاح شد.

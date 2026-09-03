@@ -55,9 +55,60 @@ document.getElementById('backupBtn').onclick=()=>{
   setTimeout(()=>URL.revokeObjectURL(a.href),500);
 };
 document.getElementById('restoreBtn').onclick=()=>document.getElementById('restoreFile').click();
+
+function parseBackupText(text){
+  return JSON.parse(String(text||'').replace(/^\uFEFF/,'').trim());
+}
+function storageString(value){
+  if(value==null)return null;
+  return typeof value==='string'?value:JSON.stringify(value);
+}
+function validSectionState(raw){
+  if(raw==null)return false;
+  try{
+    const x=typeof raw==='string'?JSON.parse(raw):raw;
+    return !!(x&&typeof x==='object'&&x.cards&&typeof x.cards==='object');
+  }catch(e){return false}
+}
+
 document.getElementById('restoreFile').onchange=e=>{
-  const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();
-  r.onload=()=>{try{const x=JSON.parse(r.result);if(x.format!=='ielts-prep-backup-v1')throw 0;if(x.vocabulary)localStorage.setItem(VOCAB,x.vocabulary);if(x.collocation)localStorage.setItem(COLLOC,x.collocation);updateStatus();alert('پیشرفت هر دو بخش بازیابی شد.')}catch(e){alert('فایل پشتیبان معتبر نیست.')}};r.readAsText(f);
+  const input=e.target;
+  const f=input.files&&input.files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const x=parseBackupText(r.result);
+      let vocab=null,colloc=null;
+
+      // Combined backup created by the IELTS home page.
+      if(x&&x.format==='ielts-prep-backup-v1'){
+        vocab=x.vocabulary;
+        colloc=x.collocation;
+      }else{
+        // Be tolerant of manually combined backups with the same two fields.
+        vocab=x&&x.vocabulary;
+        colloc=x&&x.collocation;
+      }
+
+      if(!validSectionState(vocab) && !validSectionState(colloc)){
+        throw new Error('No compatible Vocabulary/Collocation state found');
+      }
+
+      if(validSectionState(vocab))localStorage.setItem(VOCAB,storageString(vocab));
+      if(validSectionState(colloc))localStorage.setItem(COLLOC,storageString(colloc));
+
+      updateStatus();
+      alert('پیشرفت با موفقیت بازیابی شد. حالا Vocabulary و Collocation را باز کن.');
+    }catch(err){
+      console.error('IELTS restore error:',err);
+      alert('این فایل برای بازیابی قابل خواندن نبود. از فایل ielts-prep-all-progress.json استفاده کن.');
+    }finally{
+      input.value='';
+    }
+  };
+  r.onerror=()=>{alert('خواندن فایل انجام نشد. دوباره فایل را انتخاب کن.');input.value='';};
+  r.readAsText(f);
 };
 if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 if(navigator.storage&&navigator.storage.persist){navigator.storage.persist().catch(()=>{});}
