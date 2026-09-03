@@ -1,4 +1,4 @@
-const CACHE = 'ielts-prep-pwa-v1';
+const CACHE = 'ielts-prep-pwa-v4-vocab-collocation';
 const CORE = [
   './',
   './index.html',
